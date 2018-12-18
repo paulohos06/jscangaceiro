@@ -9,8 +9,6 @@ class Negociacoes {
     }
 
    get negociacoes() {
-       // passa uma nova lista baseada no array de negociacoes. Assim não é possível modificar a lista original
-       //return this._negociacoes.map(item => item);
        return [].concat(this._negociacoes);
    }
 }
