@@ -30,6 +30,10 @@ class NegociacoesView {
                     ` ).join('')}
             </tbody>
             <tfoot>
+                <tr>
+                    <td colspan="3"></td>
+                    <td>${model.volumeTotal2}</td>
+                </tr>
             </tfoot>
         </table>
         `;
