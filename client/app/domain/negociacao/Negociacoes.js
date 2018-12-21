@@ -2,10 +2,18 @@ class Negociacoes {
 
     constructor() {
         this._negociacoes = [];
+        Object.freeze(this);
     }
 
     adiciona(negociacao) {
         this._negociacoes.push(negociacao);
+    }
+
+    esvazia() {
+        // this._negociacao.length = 0;
+        for(const negociacao of this._negociacoes) {
+            this._negociacoes.pop(negociacao);
+        }
     }
 
    get negociacoes() {
