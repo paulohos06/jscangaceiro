@@ -1,19 +1,19 @@
 class Negociacoes {
 
-    constructor() {
+    constructor(armadilha) {
         this._negociacoes = [];
+        this._armadilha = armadilha;
         Object.freeze(this);
     }
 
     adiciona(negociacao) {
         this._negociacoes.push(negociacao);
+        this._armadilha(this);
     }
-
+    
     esvazia() {
-        // this._negociacao.length = 0;
-        for(const negociacao of this._negociacoes) {
-            this._negociacoes.pop(negociacao);
-        }
+        this._negociacoes.length = 0;
+        this._armadilha(this);
     }
 
    get negociacoes() {
