@@ -11,8 +11,12 @@ class DateConverter {
 
     static textoParaData(texto) {
         // ex: new Date(2018, (12 - 1), 18)
-        if(!/^\d{4}-\d{2}-\d{2}$/.test(texto)) throw new Error('Deve estar no formato YYYY-MM-DD');
+        if(!/^\d{2}\/\d{2}\/\d{4}$/.test(texto)) throw new DataInvalidaException();
 
-        return new Date(...texto.split('-').map((item, indice) => item - parseInt(indice) % 2));
+        return new Date(...texto
+            .split('/')
+            .reverse()
+            .map((item, indice) => item - parseInt(indice) % 2)
+        );
     }
 }
