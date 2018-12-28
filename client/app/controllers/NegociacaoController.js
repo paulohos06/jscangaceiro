@@ -38,6 +38,27 @@ class NegociacaoController {
         this._mensagem.texto = 'Negociação apagada com sucesso!';
     }
 
+    importa() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'negociacoes/semana');
+        xhr.onreadystatechange = () => {
+            if(xhr.readyState == 4) {
+                if(xhr.status == 200) {
+                    console.log('Obtendo as negociações do servidor.');
+                    
+                    JSON.parse(xhr.responseText)
+                    .map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor))
+                    .forEach(negociacao => this._negociacoes.adiciona(negociacao));
+                    this._mensagem.texto = 'Negociações importadas com sucesso!';
+                } else {
+                    console.log('Não foi possível obter as negociações da semana');
+                    console.log(xhr.responseText);
+                }
+            }
+        };
+        xhr.send(); // executa a req configurada
+    }
+
     _limpaFormulario() {
         this._inputValor.value = 0.0;
         this._inputQuantidade.value = 1;
