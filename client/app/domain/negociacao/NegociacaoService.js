@@ -1,23 +1,39 @@
 class NegociacaoService {
 
+    constructor() {
+        this._http = new HttpService();
+    }
+
     obtemNegociacoesDaSemana() {
-        return new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', 'negociacoes/semana');
-            xhr.onreadystatechange = () => {
-                if(xhr.readyState == 4) {
-                    if(xhr.status == 200) {
-                        const negociacoes = JSON.parse(xhr.responseText)
-                        .map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor));
-    
-                       resolve(negociacoes);
-                    } else {
-                        console.log(xhr.responseText);
-                        reject('Não foi possível obter as negociações da semana.');
-                    }
-                }
-            };
-            xhr.send();
-        });
+        return this._http.get('negociacoes/semana').then(
+            negociacoes => {
+                return negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor));
+            },
+            err => {
+                throw new Error('Não foi possível obter as negociações da semana.');
+            }
+        );
+    }
+
+    obtemNegociacoesDaSemanaAnterior() {
+        return this._http.get('negociacoes/anterior').then(
+            negociacoes => {
+                return negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor));
+            },
+            err => {
+                throw new Error('Não foi possível obter as negociações da semana anterior.');
+            }
+        );
+    }
+
+    obtemNegociacoesDaSemanaRetrasada() {
+        return this._http.get('negociacoes/retrasada').then(
+            negociacoes => {
+                return negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor));
+            },
+            err => {
+                throw new Error('Não foi possível obter as negociações da semana retrasada.');
+            }
+        );
     }
 }
