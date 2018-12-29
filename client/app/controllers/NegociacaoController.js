@@ -40,10 +40,13 @@ class NegociacaoController {
     }
 
     importa() {
-       this._service.obtemNegociacoesNoPeriodo()
+        this._service.obtemNegociacoesNoPeriodo()
         .then(negociacoes => {
-            negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao));
-            this._mensagem.texto = 'Negociações importadas com sucesso.';
+            negociacoes.filter(novaNegociacao => { 
+                return !this._negociacoes.negociacoes.some(negociacaoExistente => novaNegociacao.equals(negociacaoExistente))
+            })
+            .forEach(negociacao => this._negociacoes.adiciona(negociacao));
+            this._mensagem.texto = 'Negociações do período importadas com sucesso';
         })
         .catch(err => this._mensagem.texto = err);
     }
