@@ -6,9 +6,7 @@ class NegociacaoService {
 
     obtemNegociacoesDaSemana() {
         return this._http.get('negociacoes/semana').then(
-            negociacoes => {
-                return negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor));
-            },
+            negociacoes => negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor)),
             err => {
                 throw new Error('Não foi possível obter as negociações da semana.');
             }
@@ -17,9 +15,7 @@ class NegociacaoService {
 
     obtemNegociacoesDaSemanaAnterior() {
         return this._http.get('negociacoes/anterior').then(
-            negociacoes => {
-                return negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor));
-            },
+            negociacoes => negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor)),
             err => {
                 throw new Error('Não foi possível obter as negociações da semana anterior.');
             }
@@ -28,9 +24,7 @@ class NegociacaoService {
 
     obtemNegociacoesDaSemanaRetrasada() {
         return this._http.get('negociacoes/retrasada').then(
-            negociacoes => {
-                return negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor));
-            },
+            negociacoes => negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor)),
             err => {
                 throw new Error('Não foi possível obter as negociações da semana retrasada.');
             }
@@ -43,7 +37,10 @@ class NegociacaoService {
             this.obtemNegociacoesDaSemanaAnterior(),
             this.obtemNegociacoesDaSemanaRetrasada()
         ])
-        .then(periodo => periodo = periodo.reduce((novoArray, item) => novoArray.concat(item), []))
+        .then(periodo => periodo
+            .reduce((novoArray, item) => novoArray.concat(item), [])
+            .sort((atual, proximo) => proximo.data.getTime() - atual.data.getTime())
+        )
         .catch(err => {
             throw new Error('Não foi possível obter as negociações do período.');
         });
