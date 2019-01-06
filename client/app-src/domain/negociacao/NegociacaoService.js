@@ -34,18 +34,19 @@ export class NegociacaoService {
         );
     }
 
-    obtemNegociacoesNoPeriodo() {
-        return Promise.all([
-            this.obtemNegociacoesDaSemana(),
-            this.obtemNegociacoesDaSemanaAnterior(),
-            this.obtemNegociacoesDaSemanaRetrasada()
-        ])
-        .then(periodo => periodo
-            .reduce((novoArray, item) => novoArray.concat(item), [])
-            .sort((atual, proximo) => proximo.data.getTime() - atual.data.getTime())
-        )
-        .catch(err => {
+    async obtemNegociacoesNoPeriodo() {
+        try {
+            let periodo = await Promise.all([
+                this.obtemNegociacoesDaSemana(),
+                this.obtemNegociacoesDaSemanaAnterior(),
+                this.obtemNegociacoesDaSemanaRetrasada()
+            ]);
+            return periodo
+                .reduce((novoArray, item) => novoArray.concat(item), [])
+                .sort((a, b) => b.data.getTime() - a.data.getTime());
+        } catch(err) {
+            console.log(err);
             throw new Error('Não foi possível obter as negociações do período.');
-        });
+        };
     }
 }
