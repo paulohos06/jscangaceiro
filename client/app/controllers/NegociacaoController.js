@@ -17,7 +17,10 @@ class NegociacaoController {
             'texto'
         );
         this._service = new NegociacaoService();
-        
+        this._init();
+    }
+
+    _init() {
         // inicializa a tabela com todas as negociacoes que estao no banco
         DaoFactory.getNegociacaoDao()
             .then(dao => dao.listaTodos())
@@ -34,7 +37,7 @@ class NegociacaoController {
             .then(() => {
                 // apenas inclui na tabela se conseguiu incluir no banco
                 this._negociacoes.adiciona(this._criaNegociacao());
-                this._mensagem.texto = 'Negociação adicionada com sucesso!';
+                this._mensagem.texto = 'Negociação adicionada com sucesso.';
                 this._limpaFormulario();
             })
             .catch(err => this._mensagem.texto = err);
@@ -48,8 +51,13 @@ class NegociacaoController {
     }
 
     apaga() {
-        this._negociacoes.esvazia();
-        this._mensagem.texto = 'Negociação apagada com sucesso!';
+        DaoFactory.getNegociacaoDao()
+        .then(dao => dao.apagaTodos())
+        .then(() => {
+            this._negociacoes.esvazia();
+            this._mensagem.texto = 'Negociações apagadas com sucesso.';
+        })
+        .catch(err => this._mensagem.texto = err);
     }
 
     importa() {
@@ -59,7 +67,7 @@ class NegociacaoController {
                 return !this._negociacoes.negociacoes.some(negociacaoExistente => novaNegociacao.equals(negociacaoExistente))
             })
             .forEach(negociacao => this._negociacoes.adiciona(negociacao));
-            this._mensagem.texto = 'Negociações do período importadas com sucesso';
+            this._mensagem.texto = 'Negociações do período importadas com sucesso.';
         })
         .catch(err => this._mensagem.texto = err);
     }
