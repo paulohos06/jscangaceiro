@@ -4,8 +4,6 @@ class Negociacao {
         // o método assign() copia as propriedades dos outros objetos para o primeiro objeto parametrizado.
         Object.assign(this, {_quantidade, _valor});
         this._data = new Date(_data.getTime());
-
-        // congela o objeto para novas atribuições!
         Object.freeze(this);
     }
 

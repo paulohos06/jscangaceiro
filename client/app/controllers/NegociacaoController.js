@@ -17,14 +17,27 @@ class NegociacaoController {
             'texto'
         );
         this._service = new NegociacaoService();
+        
+        // inicializa a tabela com todas as negociacoes que estao no banco
+        DaoFactory.getNegociacaoDao()
+            .then(dao => dao.listaTodos())
+            .then(negociacoes => negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao)))
+            .catch(err => this._mensagem.texto = err);
     }
 
     adiciona(event) {
         try {
             event.preventDefault();
-            this._negociacoes.adiciona(this._criaNegociacao());
-            this._mensagem.texto = 'Negociação adicionada com sucesso!';
-            this._limpaFormulario();
+            const negociacao = this._criaNegociacao();
+            DaoFactory.getNegociacaoDao()
+            .then(dao => dao.adiciona(negociacao))
+            .then(() => {
+                // apenas inclui na tabela se conseguiu incluir no banco
+                this._negociacoes.adiciona(this._criaNegociacao());
+                this._mensagem.texto = 'Negociação adicionada com sucesso!';
+                this._limpaFormulario();
+            })
+            .catch(err => this._mensagem.texto = err);
         } catch(err) {
             console.log(err);
             console.log(err.stack);
