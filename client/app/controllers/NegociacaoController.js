@@ -67,8 +67,16 @@ class NegociacaoController {
             negociacoes.filter(novaNegociacao => { 
                 return !this._negociacoes.negociacoes.some(negociacaoExistente => novaNegociacao.equals(negociacaoExistente))
             })
-            .forEach(negociacao => this._negociacoes.adiciona(negociacao));
-            this._mensagem.texto = 'Negociações do período importadas com sucesso.';
+            .forEach(negociacao => {
+                getNegociacaoDao()
+                .then(dao => dao.adiciona(negociacao))
+                .then(() => {
+                    this._negociacoes.adiciona(negociacao);
+                    this._mensagem.texto = 'Negociações do período importadas com sucesso.';
+                })
+                .catch(err => this._mensagem.texto = err);
+            });
+            
         })
         .catch(err => this._mensagem.texto = err);
     }
