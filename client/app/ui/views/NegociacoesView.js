@@ -1,7 +1,18 @@
-class NegociacoesView extends View {
+System.register(['./View.js', '../converters/DateConverter.js'], function (_export, _context) {
+    "use strict";
 
-    template(model) {
-        return `
+    var View, DateConverter;
+    return {
+        setters: [function (_ViewJs) {
+            View = _ViewJs.View;
+        }, function (_convertersDateConverterJs) {
+            DateConverter = _convertersDateConverterJs.DateConverter;
+        }],
+        execute: function () {
+            class NegociacoesView extends View {
+
+                template(model) {
+                    return `
         <table class="table table-hover table-bordered">
             <thead>
                 <tr>
@@ -12,14 +23,13 @@ class NegociacoesView extends View {
                 </tr>
             </thead>
             <tbody>
-                ${model.negociacoes.map(negociacao => 
-                    `   <tr>
+                ${model.negociacoes.map(negociacao => `   <tr>
                             <td>${DateConverter.dataParaTexto(negociacao.data)}</td>
                             <td>${negociacao.quantidade}</td>
                             <td>${negociacao.valor}</td>
                             <td>${negociacao.volume}</td>
                         </tr>
-                    ` ).join('')}
+                    `).join('')}
             </tbody>
             <tfoot>
                 <tr>
@@ -29,5 +39,11 @@ class NegociacoesView extends View {
             </tfoot>
         </table>
         `;
-    }
-}
+                }
+            }
+
+            _export('NegociacoesView', NegociacoesView);
+        }
+    };
+});
+//# sourceMappingURL=NegociacoesView.js.map
