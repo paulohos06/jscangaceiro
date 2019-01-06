@@ -22,7 +22,7 @@ class NegociacaoController {
 
     _init() {
         // inicializa a tabela com todas as negociacoes que estao no banco
-        DaoFactory.getNegociacaoDao()
+        getNegociacaoDao()
             .then(dao => dao.listaTodos())
             .then(negociacoes => negociacoes.forEach(negociacao => this._negociacoes.adiciona(negociacao)))
             .catch(err => this._mensagem.texto = err);
@@ -32,7 +32,8 @@ class NegociacaoController {
         try {
             event.preventDefault();
             const negociacao = this._criaNegociacao();
-            DaoFactory.getNegociacaoDao()
+
+            getNegociacaoDao()
             .then(dao => dao.adiciona(negociacao))
             .then(() => {
                 // apenas inclui na tabela se conseguiu incluir no banco
@@ -51,7 +52,7 @@ class NegociacaoController {
     }
 
     apaga() {
-        DaoFactory.getNegociacaoDao()
+        getNegociacaoDao()
         .then(dao => dao.apagaTodos())
         .then(() => {
             this._negociacoes.esvazia();
