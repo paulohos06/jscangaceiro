@@ -1,5 +1,6 @@
 import { HttpService } from '../../util/HttpService.js';
 import { Negociacao } from './Negociacao.js';
+import { ApplicationException } from '../../util/ApplicationException.js';
 
 export class NegociacaoService {
 
@@ -11,7 +12,7 @@ export class NegociacaoService {
         return this._http.get('negociacoes/semana').then(
             negociacoes => negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor)),
             err => {
-                throw new Error('Não foi possível obter as negociações da semana.');
+                throw new ApplicationException('Não foi possível obter as negociações da semana.');
             }
         );
     }
@@ -20,7 +21,7 @@ export class NegociacaoService {
         return this._http.get('negociacoes/anterior').then(
             negociacoes => negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor)),
             err => {
-                throw new Error('Não foi possível obter as negociações da semana anterior.');
+                throw new ApplicationException('Não foi possível obter as negociações da semana anterior.');
             }
         );
     }
@@ -29,7 +30,7 @@ export class NegociacaoService {
         return this._http.get('negociacoes/retrasada').then(
             negociacoes => negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor)),
             err => {
-                throw new Error('Não foi possível obter as negociações da semana retrasada.');
+                throw new ApplicationException('Não foi possível obter as negociações da semana retrasada.');
             }
         );
     }
@@ -46,7 +47,7 @@ export class NegociacaoService {
                 .sort((a, b) => b.data.getTime() - a.data.getTime());
         } catch(err) {
             console.log(err);
-            throw new Error('Não foi possível obter as negociações do período.');
+            throw new ApplicationException('Não foi possível obter as negociações do período.');
         };
     }
 }

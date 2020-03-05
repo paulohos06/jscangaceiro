@@ -1,7 +1,7 @@
-System.register(['../../util/HttpService.js', './Negociacao.js'], function (_export, _context) {
+System.register(['../../util/HttpService.js', './Negociacao.js', '../../util/ApplicationException.js'], function (_export, _context) {
     "use strict";
 
-    var HttpService, Negociacao;
+    var HttpService, Negociacao, ApplicationException;
 
     function _asyncToGenerator(fn) {
         return function () {
@@ -37,6 +37,8 @@ System.register(['../../util/HttpService.js', './Negociacao.js'], function (_exp
             HttpService = _utilHttpServiceJs.HttpService;
         }, function (_NegociacaoJs) {
             Negociacao = _NegociacaoJs.Negociacao;
+        }, function (_utilApplicationExceptionJs) {
+            ApplicationException = _utilApplicationExceptionJs.ApplicationException;
         }],
         execute: function () {
             class NegociacaoService {
@@ -47,19 +49,19 @@ System.register(['../../util/HttpService.js', './Negociacao.js'], function (_exp
 
                 obtemNegociacoesDaSemana() {
                     return this._http.get('negociacoes/semana').then(negociacoes => negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor)), err => {
-                        throw new Error('Não foi possível obter as negociações da semana.');
+                        throw new ApplicationException('Não foi possível obter as negociações da semana.');
                     });
                 }
 
                 obtemNegociacoesDaSemanaAnterior() {
                     return this._http.get('negociacoes/anterior').then(negociacoes => negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor)), err => {
-                        throw new Error('Não foi possível obter as negociações da semana anterior.');
+                        throw new ApplicationException('Não foi possível obter as negociações da semana anterior.');
                     });
                 }
 
                 obtemNegociacoesDaSemanaRetrasada() {
                     return this._http.get('negociacoes/retrasada').then(negociacoes => negociacoes.map(obj => new Negociacao(new Date(obj.data), obj.quantidade, obj.valor)), err => {
-                        throw new Error('Não foi possível obter as negociações da semana retrasada.');
+                        throw new ApplicationException('Não foi possível obter as negociações da semana retrasada.');
                     });
                 }
 
@@ -76,7 +78,7 @@ System.register(['../../util/HttpService.js', './Negociacao.js'], function (_exp
                             });
                         } catch (err) {
                             console.log(err);
-                            throw new Error('Não foi possível obter as negociações do período.');
+                            throw new ApplicationException('Não foi possível obter as negociações do período.');
                         };
                     })();
                 }

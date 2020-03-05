@@ -1,7 +1,7 @@
 System.register(['../domain/index.js', '../ui/index.js', '../util/index.js'], function (_export, _context) {
     "use strict";
 
-    var Negociacoes, NegociacaoService, Negociacao, NegociacoesView, MensagemView, Mensagem, DataInvalidaException, DateConverter, getNegociacaoDao, Bind;
+    var Negociacoes, NegociacaoService, Negociacao, NegociacoesView, MensagemView, Mensagem, DataInvalidaException, DateConverter, getNegociacaoDao, Bind, getExceptionMessage;
 
     function _asyncToGenerator(fn) {
         return function () {
@@ -46,6 +46,7 @@ System.register(['../domain/index.js', '../ui/index.js', '../util/index.js'], fu
         }, function (_utilIndexJs) {
             getNegociacaoDao = _utilIndexJs.getNegociacaoDao;
             Bind = _utilIndexJs.Bind;
+            getExceptionMessage = _utilIndexJs.getExceptionMessage;
         }],
         execute: function () {
             class NegociacaoController {
@@ -74,7 +75,7 @@ System.register(['../domain/index.js', '../ui/index.js', '../util/index.js'], fu
                                 return _this._negociacoes.adiciona(negociacao);
                             });
                         } catch (err) {
-                            _this._mensagem.texto = err.message;
+                            _this._mensagem.texto = getExceptionMessage(err);
                         }
                     })();
                 }
@@ -92,7 +93,8 @@ System.register(['../domain/index.js', '../ui/index.js', '../util/index.js'], fu
                             _this2._mensagem.texto = 'Negociação adicionada com sucesso.';
                             _this2._limpaFormulario();
                         } catch (err) {
-                            if (err instanceof DataInvalidaException) _this2._mensagem.texto = err.message;else _this2._mensagem.texto = err.message;
+                            if (err instanceof DataInvalidaException) _this2._mensagem.texto = err.message;
+                            _this2._mensagem.texto = getExceptionMessage(err);
                         }
                     })();
                 }
@@ -107,7 +109,7 @@ System.register(['../domain/index.js', '../ui/index.js', '../util/index.js'], fu
                             _this3._negociacoes.esvazia();
                             _this3._mensagem.texto = 'Negociações apagadas com sucesso.';
                         } catch (err) {
-                            _this3._mensagem.text = err.message;
+                            _this3._mensagem.texto = getExceptionMessage(err);
                         }
                     })();
                 }
@@ -128,7 +130,7 @@ System.register(['../domain/index.js', '../ui/index.js', '../util/index.js'], fu
                             });
                             _this4._mensagem.texto = 'Negociações do período importadas com sucesso.';
                         } catch (err) {
-                            _this4._mensagem.texto = err.message;
+                            _this4._mensagem.texto = getExceptionMessage(err);
                         }
                     })();
                 }
